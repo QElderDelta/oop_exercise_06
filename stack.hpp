@@ -39,6 +39,7 @@ public:
     void push(const T& value);
     stack_t() = default;
     stack_t(const stack_t&) = delete;
+    stack_t& operator=(const stack_t&) = delete;
 private:
     using allocator_type = typename Allocator::template rebind<node_t>::other;
 
@@ -51,7 +52,6 @@ private:
                 allocator->deallocate(ptr, 1);
             }
         }
-
         private:
             allocator_type* allocator;
     };
@@ -60,12 +60,12 @@ private:
         T value;
         std::unique_ptr<node_t, deleter> nextNode{nullptr, deleter{&this->allocator}};
         forward_iterator next();
-        node_t(const T& value, std::unique_ptr<node_t, deleter> next) : value(value), nextNode(std::move(next)) {};
+        node_t(const T& value, std::unique_ptr<node_t, deleter> next) : value(value), nextNode(std::move(next)) {std::cout<<"constructed node\n";};
     };   
+    allocator_type allocator {};
     std::unique_ptr<node_t, deleter> head{nullptr, deleter{&this->allocator}};
     node_t* tail = nullptr;
-    stack_t& operator=(const stack_t&);
-    allocator_type allocator {};
+
 };
 
 template<class T, class Allocator>

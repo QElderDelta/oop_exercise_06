@@ -21,7 +21,7 @@ struct allocator_t {
     };
 
     allocator_t() : memory_pool_begin(new char[ALLOC_SIZE]), memory_pool_end(memory_pool_begin + ALLOC_SIZE),
-        memory_pool_tail(memory_pool_begin) {};
+        memory_pool_tail(memory_pool_begin) {std::cout<<"allocator constr\n";};
 
     allocator_t(const allocator_t&) = delete;
     allocator_t(allocator_t&&) = delete;
@@ -29,6 +29,7 @@ struct allocator_t {
     
     ~allocator_t() {
         delete[] memory_pool_begin;
+        std::cout << "allocator dest\n";
     }
     T* allocate(size_t n);
     void deallocate(T* ptr, size_t n);
@@ -48,9 +49,8 @@ T* allocator_t<T, ALLOC_SIZE>::allocate(size_t n) {
         if(free_blocks.getSize()) {
             auto it = free_blocks.begin();
             char* ptr = *it;
-            free_blocks.erase(it);
+            free_blocks.erase(0);
             return reinterpret_cast<T*>(ptr);
-
         }
         throw std::bad_alloc();
     }

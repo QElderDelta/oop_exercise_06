@@ -6,14 +6,16 @@
 #include "rhombus.hpp"
 #include "allocator.hpp"
 
+allctr::allocator_t<Rhombus<double>, 1000> allocator;
+
 int main() {
-    std::map<int, int, std::less<int>, 
+    /*std::map<int, int, std::less<int>, 
         allctr::allocator_t<std::pair<const int, int>, 1000>> m;
     for(int i = 0; i < 10; ++i) {
         m[i] = i;
     }
-    m.erase(1);
-    cntrs::stack_t<Rhombus<double>, allctr::allocator_t<Rhombus<double>, 1000>> s;
+    m.erase(1);*/
+    cntrs::stack_t<Rhombus<double>, decltype(allocator)> s;
     int command, pos;
     std::cout << "1 - add element to stack(push/insert by iterator)" << std::endl;
     std::cout << "2 - delete element from stack(pop/erase by index/erase by iterator)" << std::endl;
